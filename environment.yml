@@ -1,0 +1,17 @@
+name: enn583
+channels:
+  - conda-forge
+  - defaults
+dependencies:
+  - python=3.10
+  - nbconvert
+  - jupyterlab
+  - numpy
+  - matplotlib
+  - opencv
+  - scikit-image
+  - roboticstoolbox-python
+  - pip
+  - pip:
+      - pykitti
+prefix: /Users/niko/opt/miniconda3/envs/enn583
