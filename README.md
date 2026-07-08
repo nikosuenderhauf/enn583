@@ -30,18 +30,25 @@ The `src/` directory is your workspace. You may add Python files and package
 subdirectories as needed, but the required entry point must remain:
 
 ```text
-src/visual_odometry.py
+src/student_solution.py
 ```
 
-It must define:
+It must complete these three provided functions:
 
 ```python
+def match_features(img_i, img_j):
+    ...
+
+def estimate_relative_pose(dataset, frame_i, frame_j):
+    ...
+
 def visual_odometry(dataset):
     ...
 ```
 
-Do not change this function's name or parameters. The runner loads KITTI and
-passes a prepared dataset object into your function.
+Do not change these function names or parameters. The runner loads KITTI,
+passes test inputs into each function, and checks that each function creates
+its required output file.
 
 ## KITTI Data
 
@@ -68,21 +75,28 @@ export ENN583_DATA_DIR=/path/to/shared/data
 From the repository root:
 
 ```bash
-python assessment/run_vo.py \
+python assessment/check_student_solution.py \
     --sequence 2011_09_26_drive_0035 \
     --data-dir data
 ```
 
-The public checks verify that:
+The checker loads a real KITTI sequence, selects two image frames, and gives
+separate feedback for each subtask. It reports whether each function runs, how
+long it took, and whether its CSV output has the expected basic format:
 
-- the returned value is a dictionary;
-- it contains a `trajectory` list;
-- the trajectory is non-empty;
-- every trajectory element is a `spatialmath.SE3` object.
+- `match_features(img_i, img_j)` runs without errors and creates
+  `results_matches.csv` with header `match_id,u_i,v_i,u_j,v_j`;
+- `estimate_relative_pose(dataset, frame_i, frame_j)` runs without errors and
+  creates `results_relative_pose.csv` with header
+  `frame_i,frame_j,x,y,z,roll,pitch,yaw`;
+- `visual_odometry(dataset)` runs without errors and creates
+  `results_visual_odometry.csv` with header `frame,x,y,z,roll,pitch,yaw`.
 
-Gradescope also runs private tests that are not included in the student
-repository. During strict marking, the dataset object does not expose
-ground-truth poses.
+These checks are currently feedback-only. Later, Gradescope will compare the
+output files against reference results and assign marks for correctness.
+During strict marking, the dataset object does not expose ground-truth poses.
+The local checker uses KITTI ground truth to report feedback-only translation
+and rotation RMSE for `results_relative_pose.csv`.
 
 ## Gradescope Submission
 
@@ -92,7 +106,7 @@ Supporting modules and package subdirectories are allowed.
 Required ZIP layout:
 
 ```text
-visual_odometry.py
+student_solution.py
 another_module.py
 optional_package/
 ├── __init__.py
@@ -106,7 +120,7 @@ Create the ZIP from the repository root:
     -x "*/__pycache__/" "*/__pycache__/*" "*.pyc")
 ```
 
-When the ZIP is opened, `visual_odometry.py` must be visible immediately at its
+When the ZIP is opened, `student_solution.py` must be visible immediately at its
 root. Do not include `src/` or another outer directory in the ZIP. You do not
 need to submit datasets, notebooks, the environment, `assessment/`, or
 `support/`.
