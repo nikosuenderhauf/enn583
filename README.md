@@ -80,9 +80,17 @@ python assessment/check_student_solution.py \
     --data-dir data
 ```
 
-The checker loads a real KITTI sequence, selects two image frames, and gives
-separate feedback for each subtask. It reports whether each function runs, how
-long it took, and whether its CSV output has the expected basic format:
+The checker prints coloured/icon-based feedback in the terminal and also writes
+the same feedback to `check_student_solution_report.txt`. Use
+`--report-file my_report.txt` to choose another filename, or
+`--no-report-file` to disable the report.
+By default it runs all three checks. Use `--check-matches`,
+`--check-relative-pose`, and/or `--check-visual-odometry` to run only selected
+checks.
+
+The checker loads a real KITTI sequence and gives separate feedback for each
+subtask. It reports whether each function runs, how long it took, and whether
+its CSV output has the expected basic format:
 
 - `match_features(img_i, img_j)` runs without errors and creates
   `results_matches.csv` with header `match_id,u_i,v_i,u_j,v_j`;
@@ -95,8 +103,21 @@ long it took, and whether its CSV output has the expected basic format:
 These checks are currently feedback-only. Later, Gradescope will compare the
 output files against reference results and assign marks for correctness.
 During strict marking, the dataset object does not expose ground-truth poses.
-The local checker uses KITTI ground truth to report feedback-only translation
-and rotation RMSE for `results_relative_pose.csv`.
+The local checker uses KITTI ground truth to give feedback only:
+
+- for `results_matches.csv`, it computes a trusted fundamental matrix from the
+  calibrated left-camera poses and reports Sampson errors for the submitted
+  matches;
+- for `results_relative_pose.csv`, it reports translation and rotation RMSE.
+
+By default, it checks 10 random adjacent frame pairs using random seed 0. You
+can change this with `--frame-pairs`, `--random-seed`, and `--skip-frames`.
+For example, `--skip-frames 5` checks pairs of the form `i -> i+5`.
+Pose angles must be written in radians; the checker warns if the CSV looks like
+it may contain degrees instead.
+When checking `visual_odometry()`, the checker also writes
+`results_visual_odometry_comparison.png`, comparing the submitted trajectory
+against KITTI ground truth in the top-down `x/z` plane.
 
 ## Gradescope Submission
 

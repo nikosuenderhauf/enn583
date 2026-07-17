@@ -1,21 +1,24 @@
-"""Student implementation scaffold for the ENN583 2026 visual odometry assessment.
+# ====================================================================================
+# Student implementation scaffold for the ENN583 2026 coding project assessment.
+# ====================================================================================
+# 
+# You may add helper functions, classes, and additional modules inside ``src/``.
+# IMPORTANT: Do not change the names or parameters of the three provided functions. 
+# Gradescope and the local assessment checker call them directly. If you make changes to these
+# functions or their parameters, your code will not run correctly on Gradescope and you will lose marks.
+# 
+# ``match_features(img_i, img_j)``
+#     Match visual features between two provided images and write
+#     ``results_matches.csv``.
+# 
+# ``estimate_relative_pose(dataset, frame_i, frame_j)``
+#     Estimate the relative motion between two dataset frames and write
+#     ``results_relative_pose.csv``.
+# 
+# ``visual_odometry(dataset)``
+#     Estimate the trajectory for a dataset sequence and write
+#     ``results_visual_odometry.csv``.
 
-You may add helper functions, classes, and additional modules inside ``src/``.
-Do not change the names or parameters of the three provided functions because
-the local assessment runner and Gradescope call them directly:
-
-``match_features(img_i, img_j)``
-    Match visual features between two provided images and write
-    ``results_matches.csv``.
-
-``estimate_relative_pose(dataset, frame_i, frame_j)``
-    Estimate the relative motion between two dataset frames and write
-    ``results_relative_pose.csv``.
-
-``visual_odometry(dataset)``
-    Estimate the trajectory for a dataset sequence and write
-    ``results_visual_odometry.csv``.
-"""
 
 import numpy as np
 import spatialmath as sm
@@ -145,9 +148,10 @@ def estimate_relative_pose(dataset, frame_i: int, frame_j: int):
     ``frame_i,frame_j,x,y,z,roll,pitch,yaw``
 
     Here ``x,y,z`` are the translation components and ``roll,pitch,yaw`` are
-    Euler angles, all describing the pose of ``frame_j`` relative to
-    ``frame_i``. Angles must be in radians. The checker interprets them using
-    SpatialMath's ``SE3.RPY(roll, pitch, yaw, order="zyx")`` convention.
+    Euler angles, all describing the left-camera pose of ``frame_j`` relative
+    to the left-camera pose of ``frame_i``. Angles must be in radians. The
+    checker interprets them using SpatialMath's
+    ``SE3.RPY(roll, pitch, yaw, order="zyx")`` convention.
 
     Example
     -------
