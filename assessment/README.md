@@ -148,6 +148,6 @@ entry functions, for example:
 
 ```bash
 python assessment/check_student_solution.py \
-    --solution-module instructor.reference_solution_good \
+    --solution-module instructor.reference_solutions.good.student_solution \
     --max-frames 3
 ```
