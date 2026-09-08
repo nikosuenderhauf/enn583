@@ -13,6 +13,10 @@ dependencies:
   - roboticstoolbox-python
   - pip
   - pip:
+      - --extra-index-url https://download.pytorch.org/whl/cu128
       - pykitti
-      - symforce
+      - symforce==0.11.0
+      - torch==2.9.1+cu128
+      - torchvision==0.24.1+cu128
+      - transformers==5.13.1
 prefix: /Users/niko/opt/miniconda3/envs/enn583
